@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HSK Personal Trainer V5.28 — GitHub Pages Edition</title>
+<link rel="stylesheet" href="css/app.css">
+
+<meta name="generator" content="HSK Personal Trainer V5.28 GitHub Pages Edition">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark">汉</div><div class="brand-copy"><h1>HSK Personal Trainer</h1><p>V5.28 · GitHub Pages Edition</p></div></div>
+    <nav class="nav compact-nav">
+      <button class="active nav-home" data-view="dashboard" data-hotkey="Alt+1">🏠 <span>Tổng quan</span></button>
+
+      <details class="nav-folder" data-folder="vocab" open>
+        <summary><span class="folder-icon">📚</span><span class="folder-text">Học & ôn từ vựng</span><span class="folder-chevron">›</span></summary>
+        <div class="nav-folder-body">
+          <button data-view="scan" data-hotkey="Alt+2">⚡ <span>Quét nhanh</span></button>
+          <button data-view="smart-vocab">🧠 <span>Học từ thông minh</span></button>
+          <button data-view="radicals">部 <span>214 Bộ thủ</span></button>
+          <button data-view="dictionary" data-hotkey="Alt+7">🔎 <span>Từ điển</span></button>
+        </div>
+      </details>
+
+      <details class="nav-folder" data-folder="vocab-test">
+        <summary><span class="folder-icon">🎯</span><span class="folder-text">Kiểm tra từ vựng</span><span class="folder-chevron">›</span></summary>
+        <div class="nav-folder-body">
+          <button data-view="quiz" data-hotkey="Alt+3">🧠 <span>Hỗn hợp</span></button>
+          <button data-view="flashcards">🃏 <span>Flashcard</span></button>
+          <button data-view="type-pinyin" data-hotkey="Alt+4">⌨️ <span>Gõ Pinyin</span></button>
+          <button data-view="type-hanzi" data-hotkey="Alt+5">汉 <span>Gõ chữ Hán</span></button>
+          <button data-view="handwrite" data-hotkey="Alt+6">✍️ <span>Viết tay</span></button>
+        </div>
+      </details>
+
+      <details class="nav-folder" data-folder="grammar">
+        <summary><span class="folder-icon">🧩</span><span class="folder-text">Ngữ pháp & cấu trúc câu</span><span class="folder-chevron">›</span></summary>
+        <div class="nav-folder-body">
+          <button data-view="sentence-lab">⌨️ <span>Luyện cấu trúc câu</span></button>
+        </div>
+      </details>
+
+      <details class="nav-folder" data-folder="system">
+        <summary><span class="folder-icon">📊</span><span class="folder-text">Theo dõi & hệ thống</span><span class="folder-chevron">›</span></summary>
+        <div class="nav-folder-body">
+          <button data-view="progress" data-hotkey="Alt+8">📈 <span>Tiến độ</span></button>
+          <button data-view="settings" data-hotkey="Alt+9">⚙️ <span>Cài đặt</span></button>
+        </div>
+      </details>
+    </nav>
+    <div class="side-note">Học từ tập trung vào Từ → Câu. Radical Lab quản lý 214 bộ thủ; Flashcard từ vựng dùng dữ liệu bộ thủ đã xác minh để hỗ trợ nhận dạng chữ.</div>
+  </aside>
+  <main class="main">
+    <header class="topbar compact-topbar"><h2 id="pageTitle">Tổng quan</h2><div class="top-actions">
+      <span class="pill" id="todayPill">Hôm nay 0/40</span><span class="pill" id="streakPill">🔥 0 ngày</span>
+      <details class="visibility-menu">
+        <summary title="Tùy chọn hiển thị">👁 <span>Hiển thị</span></summary>
+        <div class="visibility-pop">
+          <div class="mini" style="margin-bottom:7px">Thông tin hiển thị</div>
+          <button type="button" class="visibility-chip" data-visibility="hanzi" data-hotkey="Alt+H" title="Bật/tắt chữ Hán">汉 Chữ Hán</button>
+          <button type="button" class="visibility-chip" data-visibility="pinyin" data-hotkey="Alt+P" title="Bật/tắt Pinyin">Pinyin</button>
+          <button type="button" class="visibility-chip" data-visibility="meaning" data-hotkey="Alt+M" title="Bật/tắt nghĩa tiếng Việt">Nghĩa Việt</button>
+        </div>
+      </details>
+      <button type="button" class="shortcut-help-btn compact-shortcut" id="shortcutHelpBtn" data-hotkey="?" title="Xem phím tắt (?)">⌨ <span>Phím tắt</span></button>
+    </div></header>
+    <div class="content">
+      <section id="view-dashboard" class="view active">
+        <div class="hero compact-hero"><div><h3>HSK Personal Trainer</h3><p>Từ vựng · kiểm tra chủ động · cấu trúc câu · theo dõi tiến độ.</p></div><button class="btn primary" data-go="scan" data-hotkey="Alt+2">Ôn ngay</button></div>
+        <div class="grid kpis" id="kpis"></div>
+        <div class="grid two">
+          <div class="card section"><h4>Lộ trình học</h4><div class="roadmap" id="roadmap"></div></div>
+          <div class="card section"><h4>Ôn hôm nay</h4><div id="todaySummary"></div><div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn secondary" data-go="quiz" data-hotkey="Alt+3">Làm bài hỗn hợp</button><button class="btn ghost" id="reviewWeakBtn" data-hotkey="Alt+W">Ôn từ yếu</button></div></div>
+        </div>
+      </section>
+
+      <section id="view-scan" class="view">
+        <div class="hero"><div><h3>Quét nhanh → phân loại</h3><p>Nhìn nhanh một lượng từ lớn, tự đánh dấu “Biết / Chưa chắc / Chưa biết”, sau đó hệ thống ưu tiên ôn sâu các từ yếu.</p></div></div>
+        <div class="card filters"><div class="filter-row">
+          <div class="field"><label>Nguồn</label><select id="scanSource"><option value="ALL">Tất cả</option><option value="PREP">PREP HSK1–3</option><option value="OUTSIDE_PREP">Ngoài PREP</option></select></div>
+          <div class="field"><label>Cấp</label><div class="levels" id="scanLevels"></div></div>
+          <div class="field"><label>Số từ</label><select id="scanCount"><option>20</option><option selected>40</option><option>60</option><option>100</option></select></div>
+          <div class="field"><label>Thứ tự</label><select id="scanOrder"><option value="PINYIN_ASC" selected>Pinyin A → Z</option><option value="PINYIN_DESC">Pinyin Z → A</option><option value="RANDOM">Ngẫu nhiên</option><option value="SHEET">Theo Sheet</option></select></div>
+          <button class="btn primary" id="startScan" data-hotkey="Enter">Tạo phiên quét</button>
+        </div></div>
+        <div class="card study-card" id="scanCard"><div class="empty">Chọn phạm vi và bấm “Tạo phiên quét”.</div></div>
+      </section>
+
+      <section id="view-quiz" class="view">
+        <div class="hero"><div><h3>Kiểm tra hỗn hợp</h3><p>Kết hợp nhận diện, nhớ chủ động, Pinyin có dấu thanh và mẫu câu. Các câu sai tự động vào hàng ôn lại.</p></div></div>
+        <div class="card filters"><div class="filter-row">
+          <div class="field"><label>Nguồn</label><select id="quizSource"><option value="ALL">Tất cả</option><option value="PREP">PREP HSK1–3</option><option value="OUTSIDE_PREP">Ngoài PREP</option></select></div>
+          <div class="field"><label>Cấp</label><div class="levels" id="quizLevels"></div></div>
+          <div class="field"><label>Số câu</label><select id="quizCount"><option>10</option><option selected>20</option><option>40</option><option>60</option><option>100</option></select></div>
+          <div class="field"><label>Phạm vi</label><select id="quizScope"><option value="ALL">Tất cả từ</option><option value="DUE">Đến hạn ôn</option><option value="WEAK">Từ yếu / sai</option><option value="UNSEEN">Chưa học</option></select></div>
+          <div class="field"><label>Thứ tự</label><select id="quizOrder"><option value="PINYIN_ASC" selected>Pinyin A → Z</option><option value="PINYIN_DESC">Pinyin Z → A</option><option value="RANDOM">Ngẫu nhiên</option><option value="SHEET">Theo Sheet</option></select></div>
+          <button class="btn primary" id="startQuiz" data-hotkey="Enter">Bắt đầu</button>
+        </div></div>
+        <div class="quiz-wrap">
+          <div class="card quiz-main" id="quizMain"><div class="empty">Chọn cấu hình rồi bấm “Bắt đầu”.</div></div>
+          <aside class="card quiz-side">
+            <h4 style="margin-top:0">Nhóm kiểm tra</h4>
+            <div class="mode-list grouped-mode-list" id="modeList">
+              <details class="quiz-mode-group" open>
+                <summary>👀 Nhận biết</summary>
+                <div class="quiz-mode-body">
+                  <label class="check"><input type="checkbox" value="hanzi_meaning" checked> Hán → nghĩa Việt</label>
+                  <label class="check"><input type="checkbox" value="hanzi_pinyin" checked> Hán → Pinyin có dấu</label>
+                  <label class="check"><input type="checkbox" value="hanzi_pos"> Hán → từ loại</label>
+                </div>
+              </details>
+              <details class="quiz-mode-group" open>
+                <summary>🧠 Gọi lại chủ động</summary>
+                <div class="quiz-mode-body">
+                  <label class="check"><input type="checkbox" value="meaning_hanzi" checked> Nghĩa Việt → Hán</label>
+                  <label class="check"><input type="checkbox" value="pinyin_hanzi" checked> Pinyin → Hán</label>
+                </div>
+              </details>
+              <details class="quiz-mode-group">
+                <summary>🔊 Pinyin & âm đọc</summary>
+                <div class="quiz-mode-body">
+                  <label class="check"><input type="checkbox" value="meaning_pinyin"> Nghĩa Việt → Pinyin có dấu</label>
+                  <label class="check"><input type="checkbox" value="pinyin_meaning"> Pinyin → nghĩa Việt</label>
+                  <label class="check"><input type="checkbox" value="sentence_pinyin"> Mẫu câu → Pinyin</label>
+                </div>
+              </details>
+              <details class="quiz-mode-group" open>
+                <summary>🧩 Ngữ cảnh</summary>
+                <div class="quiz-mode-body">
+                  <label class="check"><input type="checkbox" value="cloze" checked> Mẫu câu khuyết → điền từ</label>
+                </div>
+              </details>
+            </div>
+            <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+            <div id="quizStats"><div class="statline"><span>Đúng</span><b>0</b></div><div class="statline"><span>Sai</span><b>0</b></div><div class="statline"><span>Độ chính xác</span><b>—</b></div></div>
+          </aside>
+        </div>
+      </section>
+
+
+      <section id="view-type-pinyin" class="view">
+        <div class="hero"><div><h3>Gõ Pinyin có dấu thanh</h3><p>Nhìn chữ Hán rồi tự gõ Pinyin. Hệ thống chấm cả <b>âm tiết lẫn thanh điệu</b>; khoảng trắng và dấu câu không ảnh hưởng kết quả.</p></div></div>
+        <div class="card filters"><div class="filter-row">
+          <div class="field"><label>Nguồn</label><select id="tpSource"><option value="ALL">Tất cả</option><option value="PREP">PREP HSK1–3</option><option value="OUTSIDE_PREP">Ngoài PREP</option></select></div>
+          <div class="field"><label>Cấp</label><div class="levels" id="tpLevels"></div></div>
+          <div class="field"><label>Số câu</label><select id="tpCount"><option>10</option><option selected>20</option><option>40</option><option>60</option><option>100</option></select></div>
+          <div class="field"><label>Phạm vi</label><select id="tpScope"><option value="ALL">Tất cả từ</option><option value="DUE">Đến hạn ôn</option><option value="WEAK">Từ yếu / từng sai</option><option value="UNSEEN">Chưa học</option></select></div>
+          <div class="field"><label>Thứ tự</label><select id="tpOrder"><option value="PINYIN_ASC" selected>Pinyin A → Z</option><option value="PINYIN_DESC">Pinyin Z → A</option><option value="RANDOM">Ngẫu nhiên</option><option value="SHEET">Theo Sheet</option></select></div>
+          <div class="field"><label>Gợi ý</label><select id="tpHint"><option value="HANZI">Chỉ chữ Hán</option><option value="HANZI_MEANING">Hán + nghĩa Việt</option></select></div>
+          <button class="btn primary" id="tpStart" data-hotkey="Enter">Bắt đầu gõ</button>
+        </div></div>
+        <div class="practice-layout">
+          <div class="card practice-main" id="tpMain"><div class="empty">Chọn phạm vi rồi bấm “Bắt đầu gõ”.</div></div>
+          <aside class="card practice-side"><h4>Phiên gõ Pinyin</h4><div id="tpStats"></div><div class="practice-tip"><b>Mẹo nhập dấu:</b> có bàn phím dấu và ô đổi <code>ni3 hao3</code> → <code>nǐ hǎo</code>.</div></aside>
+        </div>
+      </section>
+
+      <section id="view-type-hanzi" class="view">
+        <div class="hero"><div><h3>Gõ chữ Hán</h3><p>Luyện nhớ chủ động bằng cách gõ chữ Hán từ nghĩa, Pinyin hoặc kết hợp cả hai. Dữ liệu đáp án giữ nguyên theo Sheet.</p></div></div>
+        <div class="card filters"><div class="filter-row">
+          <div class="field"><label>Nguồn</label><select id="thSource"><option value="ALL">Tất cả</option><option value="PREP">PREP HSK1–3</option><option value="OUTSIDE_PREP">Ngoài PREP</option></select></div>
+          <div class="field"><label>Cấp</label><div class="levels" id="thLevels"></div></div>
+          <div class="field"><label>Số câu</label><select id="thCount"><option>10</option><option selected>20</option><option>40</option><option>60</option><option>100</option></select></div>
+          <div class="field"><label>Phạm vi</label><select id="thScope"><option value="ALL">Tất cả từ</option><option value="DUE">Đến hạn ôn</option><option value="WEAK">Từ yếu / từng sai</option><option value="UNSEEN">Chưa học</option></select></div>
+          <div class="field"><label>Thứ tự</label><select id="thOrder"><option value="PINYIN_ASC" selected>Pinyin A → Z</option><option value="PINYIN_DESC">Pinyin Z → A</option><option value="RANDOM">Ngẫu nhiên</option><option value="SHEET">Theo Sheet</option></select></div>
+          <div class="field"><label>Đề bài</label><select id="thPrompt"><option value="MEANING">Nghĩa Việt → Hán</option><option value="PINYIN">Pinyin → Hán</option><option value="BOTH">Nghĩa + Pinyin → Hán</option><option value="CLOZE">Mẫu câu khuyết → Hán</option></select></div>
+          <button class="btn primary" id="thStart" data-hotkey="Enter">Bắt đầu gõ</button>
+        </div></div>
+        <div class="practice-layout">
+          <div class="card practice-main" id="thMain"><div class="empty">Chọn phạm vi rồi bấm “Bắt đầu gõ”.</div></div>
+          <aside class="card practice-side"><h4>Phiên gõ chữ Hán</h4><div id="thStats"></div><div class="practice-tip">Dùng bộ gõ tiếng Trung/IME trên máy. Hệ thống chấm đúng theo chữ Hán giản thể trong Sheet.</div></aside>
+        </div>
+      </section>
+
+      <section id="view-handwrite" class="view">
+        <div class="hero"><div><h3>Viết tay → xác minh nét chữ Hán</h3><p>Chế độ miễn phí ưu tiên độ chính xác: website biết chữ mục tiêu và dùng HanziWriter để kiểm tra từng nét, thứ tự và hướng viết. Sau khi viết đúng xong một chữ, hệ thống tự xác nhận theo thời gian chờ bạn cài (mặc định 2 giây).</p></div></div>
+        <div class="card filters"><div class="filter-row">
+          <div class="field"><label>Nguồn</label><select id="hwSource"><option value="ALL">Tất cả</option><option value="PREP">PREP HSK1–3</option><option value="OUTSIDE_PREP">Ngoài PREP</option></select></div>
+          <div class="field"><label>Cấp</label><div class="levels" id="hwLevels"></div></div>
+          <div class="field"><label>Số câu</label><select id="hwCount"><option>5</option><option selected>10</option><option>20</option><option>40</option></select></div>
+          <div class="field"><label>Phạm vi</label><select id="hwScope"><option value="ALL">Tất cả từ</option><option value="DUE">Đến hạn ôn</option><option value="WEAK">Từ yếu / từng sai</option><option value="UNSEEN">Chưa học</option></select></div>
+          <div class="field"><label>Thứ tự</label><select id="hwOrder"><option value="PINYIN_ASC" selected>Pinyin A → Z</option><option value="PINYIN_DESC">Pinyin Z → A</option><option value="RANDOM">Ngẫu nhiên</option><option value="SHEET">Theo Sheet</option></select></div>
+          <div class="field"><label>Đề bài</label><select id="hwPrompt"><option value="MEANING_PINYIN">Nghĩa + Pinyin</option><option value="MEANING">Chỉ nghĩa Việt</option><option value="PINYIN">Chỉ Pinyin</option></select></div>
+          <button class="btn primary" id="hwStart" data-hotkey="Enter">Bắt đầu viết</button>
+        </div></div>
+        <div class="practice-layout handwriting-layout">
+          <div class="card practice-main" id="hwMain"><div class="empty">Chọn phạm vi rồi bấm “Bắt đầu viết”.</div></div>
+          <aside class="card practice-side"><h4>Kiểm tra nét viết</h4><div id="hwSupport"></div><div id="hwStats"></div><div class="practice-tip"><b>Cơ chế:</b> không còn đoán chữ bằng HanziLookup. HanziWriter đối chiếu trực tiếp nét bạn viết với chữ đáp án đang bị ẩn. Nếu dữ liệu nét không tải được, vẫn có ô dự phòng dùng bàn phím viết tay tiếng Trung của hệ điều hành.</div></aside>
+        </div>
+      </section>
+
+      
+      
+      <section id="view-flashcards" class="view">
+        <div class="hero compact-hero">
+          <div>
+            <h3>Flashcard từ vựng HSK1–3</h3>
+            <p>Kiểm tra gọi lại chủ động: mặt trước là chữ Hán; lật thẻ mới hiện Pinyin, nghĩa và ví dụ. Khi bấm <b>✓ Đã nhớ</b>, hệ thống trả thêm phân tích từ, bộ thủ/thành phần và cách ghi nhớ. Mỗi phiên chỉ lấy <b>đúng một cấp HSK</b>.</p>
+          </div>
+        </div>
+
+        <div class="card filters">
+          <div class="filter-row">
+            <div class="field">
+              <label>Cấp HSK</label>
+              <select id="fcLevel">
+                <option value="1">HSK1</option>
+                <option value="2">HSK2</option>
+                <option value="3">HSK3</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Số thẻ</label>
+              <select id="fcCount">
+                <option>10</option>
+                <option selected>20</option>
+                <option>40</option>
+                <option>60</option>
+                <option>100</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Thứ tự</label>
+              <select id="fcOrder">
+                <option value="RANDOM" selected>Ngẫu nhiên</option>
+                <option value="PINYIN">Pinyin A → Z</option>
+              </select>
+            </div>
+            <button class="btn primary" id="fcStart">Bắt đầu</button>
+          </div>
+          <div class="mini" id="fcLevelInfo" style="margin-top:9px"></div>
+        </div>
+
+        <div class="practice-layout">
+          <div class="card fc-main" id="fcMain">
+            <div class="empty" id="fcEmpty">Chọn HSK1, HSK2 hoặc HSK3 rồi bấm “Bắt đầu”.</div>
+            <div id="fcBody" class="hidden">
+              <div class="fc-head">
+                <div><b id="fcTitle">Flashcard</b><div class="mini" id="fcProgressText"></div></div>
+                <span class="pill" id="fcLevelPill">HSK1</span>
+              </div>
+              <div class="progress" style="margin:12px 0 4px"><span id="fcProgressBar" style="width:0"></span></div>
+
+              <div class="sv-flash-wrap">
+                <button type="button" class="sv-flashcard" id="fcCard" aria-label="Lật flashcard">
+                  <div class="sv-flash-inner">
+                    <div class="sv-flash-face sv-flash-front">
+                      <div class="sv-flash-label">MẶT TRƯỚC</div>
+                      <div class="sv-flash-hanzi" id="fcFront"></div>
+                      <div class="mini">Tự nhớ Pinyin + nghĩa rồi nhấn để lật</div>
+                    </div>
+                    <div class="sv-flash-face sv-flash-back">
+                      <div class="sv-flash-label">MẶT SAU</div>
+                      <div class="sv-flash-hanzi small-back" id="fcBackHanzi"></div>
+                      <div class="sv-flash-pinyin" id="fcPinyin"></div>
+                      <div class="sv-flash-meaning" id="fcMeaning"></div>
+                      <div class="meta" id="fcMeta"></div>
+                      <div class="sv-flash-example" id="fcExample"></div>
+                    </div>
+                  </div>
+                </button>
+              </div>
+
+              <div class="fc-actions">
+                <button class="btn bad" id="fcMissed">× Chưa nhớ</button>
+                <button class="btn good" id="fcKnown">✓ Đã nhớ</button>
+              </div>
+              <div class="fc-next hidden" id="fcNextWrap">
+                <button class="btn primary" id="fcNext">Thẻ tiếp theo →</button>
+              </div>
+            </div>
+          </div>
+
+          <aside class="card practice-side fc-side">
+            <h4>Kết quả phiên</h4>
+            <div id="fcStats"></div>
+            <div class="practice-tip">Đánh dấu xong thẻ sẽ <b>không tự chuyển</b>. Khi bấm <b>✓ Đã nhớ</b>, phần phân tích từ sẽ mở ngay bên dưới.</div>
+
+            <div id="fcAnalysis" class="fc-analysis hidden">
+              <div class="fc-analysis-head">
+                <span class="fc-analysis-kicker">PHÂN TÍCH SAU KHI GHI NHỚ</span>
+                <h4 id="fcAnalysisWord" style="margin:5px 0 0"></h4>
+              </div>
+              <div id="fcAnalysisBody"></div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="view-sentence-lab" class="view">
+        <div class="hero">
+          <div>
+            <h3>Luyện cấu trúc câu</h3>
+            <p>Phần ngữ pháp được tổ chức thành đúng <b>2 khu vực</b>: <b>Ngữ pháp chuẩn</b> để học và luyện theo hệ thống đã chuẩn hóa; <b>PREP</b> là kho nguồn khóa, giữ nguyên nội dung gốc. PREP chỉ được bổ sung khi bạn cung cấp thêm bài/tài liệu PREP.</p>
+          </div>
+        </div>
+
+        <div class="card section">
+          <div class="sl-tabs">
+            <button type="button" class="sl-tab active" data-sl-tab="unified">🧭 Ngữ pháp chuẩn</button>
+            <button type="button" class="sl-tab" data-sl-tab="prep">🔒 PREP</button>
+          </div>
+          <div class="sl-summary">
+            <div class="sl-stat"><span class="mini">Ngữ pháp chuẩn</span><span class="v" id="unifiedCount">102</span><span class="mini">mục sau khi gộp</span></div>
+            <div class="sl-stat"><span class="mini">Ngân hàng câu</span><span class="v" id="slBankCount">0</span><span class="mini">câu</span></div>
+            <div class="sl-stat"><span class="mini">Kho từ nền</span><span class="v">1000</span><span class="mini">HSK1–3</span></div>
+            <div class="sl-stat"><span class="mini">Đã làm</span><span class="v" id="slAttemptCount">0</span><span class="mini">lượt</span></div>
+            <div class="sl-stat"><span class="mini">Độ chính xác</span><span class="v" id="slAccuracy">0%</span><span class="mini">Sentence Lab</span></div>
+          </div>
+        </div>
+
+
+        <div id="slPanelUnified" class="sl-panel">
+          <div class="card section unified-cover">
+            <div class="prep-cover-title">
+              <div>
+                <div class="prep-kicker">NGỮ PHÁP CHUẨN</div>
+                <h4>Một điểm ngữ pháp — một nơi để học</h4>
+                <p class="mini">Mỗi điểm chỉ xuất hiện một lần. Các cách dùng gần nhau được gom vào cùng một mục; phần mở rộng nằm trong giải thích của chính điểm ngữ pháp đó. Khu vực này tập trung vào kiến thức học được, không hiển thị nhãn nguồn.</p>
+              </div>
+              <div class="prep-cover-kpis">
+                <div><b id="unifiedKpiCount">0</b><span>điểm chuẩn</span></div>
+                <div><b id="unifiedPracticeCount">0</b><span>có bài luyện</span></div>
+                <div><b>2</b><span>khu vực ngữ pháp</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="card filters unified-filter-card">
+            <div class="filter-row unified-filter-row">
+              <div class="field"><label>Cấp HSK</label><select id="unifiedLevel"><option value="ALL">Tất cả</option><option value="1">HSK1</option><option value="2">HSK2</option><option value="HN">Chưa gán cấp</option></select></div>
+              <div class="field"><label>Nhóm</label><select id="unifiedGroup"><option value="ALL">Tất cả nhóm</option></select></div>
+              <div class="field unified-search"><label>Tìm ngữ pháp</label><input id="unifiedSearch" placeholder="Ví dụ: 比, 的, 在, bổ ngữ, phương vị…"></div>
+              <label class="unified-check"><input type="checkbox" id="unifiedExpansionOnly"> <span>Có cách dùng mở rộng</span></label>
+              <button class="btn secondary" id="unifiedReset">Xóa bộ lọc</button>
+            </div>
+            <div class="prep-filter-meta"><span id="unifiedMatch">0 điểm phù hợp</span><span>·</span><span>Mỗi điểm ngữ pháp chỉ xuất hiện một lần.</span></div>
+          </div>
+          <div class="card section" style="padding:14px 16px">
+            <div class="prep-catalog-head" style="align-items:center">
+              <div><h4 style="margin:0 0 4px">Công cụ học ngữ pháp</h4><div class="mini">Các công cụ này thuộc Ngữ pháp chuẩn, không phải mục nguồn riêng.</div></div>
+              <div class="unified-actions" style="margin-top:0">
+                <button type="button" class="btn secondary" data-sl-open-tool="practice">⌨️ Luyện câu</button>
+                <button type="button" class="btn ghost" data-sl-open-tool="grammar">🧩 Cấu trúc có bài luyện</button>
+                <button type="button" class="btn ghost" data-sl-open-tool="errors">🔁 Ôn lỗi</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card section prep-catalog-wrap">
+            <div class="prep-catalog-head"><div><h4>Danh mục ngữ pháp chuẩn</h4><div class="mini">Công thức chính → cách dùng mở rộng → luyện tập. Nguồn được lưu nội bộ và không hiển thị trên thẻ.</div></div><span class="pill" id="unifiedCatalogCount">0 mục</span></div>
+            <div id="unifiedCatalog"></div>
+          </div>
+        </div>
+
+        <div id="slPanelPrep" class="sl-panel hidden">
+          <div class="card section prep-cover-head">
+            <div class="prep-cover-title">
+              <div>
+                <div class="prep-kicker">🔒 PREP · KHÓA NGUỒN</div>
+                <h4>PREP · giữ nguyên nội dung nguồn</h4>
+                <p class="mini"><b>Nguyên tắc khóa:</b> không sửa, gộp, đổi tên, xóa hay nhập nội dung từ nguồn khác vào PREP. Chỉ bổ sung PREP khi bạn trực tiếp gửi thêm bài/tài liệu PREP. Hiện giữ nguyên HSK1 PREP 28 bài + HSK2 PREP 12 bài.</p>
+              </div>
+              <div class="prep-cover-kpis">
+                <div><b>154</b><span>HSK1</span></div>
+                <div><b>48</b><span>HSK2</span></div>
+                <div><b>202</b><span>Tổng</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card filters prep-filter-card">
+            <div class="filter-row prep-filter-row">
+              <div class="field"><label>Cấp PREP</label><select id="prepLevel"><option value="ALL">Tất cả</option><option value="1">HSK1 · 154 mục</option><option value="2">HSK2 · 48 mục</option></select></div>
+              <div class="field"><label>Bài PREP</label><select id="prepLesson"><option value="ALL">Tất cả bài</option></select></div>
+              <div class="field prep-search-field"><label>Tìm điểm ngữ pháp</label><input id="prepSearch" placeholder="Ví dụ: 吗, 比, 得, phương vị, bổ ngữ…"></div>
+              <div class="field"><label>Số câu</label><select id="prepCount"><option value="10">10</option><option value="20" selected>20</option><option value="50">50</option><option value="ALL">Tất cả</option></select></div>
+              <div class="field"><label>Thứ tự</label><select id="prepOrder"><option value="LESSON">Theo bài</option><option value="RANDOM">Ngẫu nhiên</option></select></div>
+              <button class="btn primary" id="prepStart">Bắt đầu ôn PREP</button>
+            </div>
+            <div class="prep-filter-meta"><span id="prepMatchCount">202 mục phù hợp</span><span>·</span><span>🔒 PREP khóa nguồn · chỉ bổ sung khi bạn cung cấp thêm PREP.</span></div>
+          </div>
+
+          <div class="practice-layout prep-practice-layout">
+            <div class="card sl-qcard prep-quiz-card">
+              <div id="prepInitial" class="sl-empty">Chọn cấp/bài rồi bấm <b>Bắt đầu ôn PREP</b>, hoặc chọn “Luyện mục này” trong danh mục phía dưới.</div>
+              <div id="prepQuizBody" class="hidden">
+                <div class="sl-qhead">
+                  <div><div class="sl-qtitle" id="prepQTitle"></div><div class="sl-qsource" id="prepQSource"></div></div>
+                  <div class="mini"><span id="prepQIndex">1</span>/<span id="prepQTotal">1</span></div>
+                </div>
+                <div class="sl-progress"><span id="prepQProgress" style="width:0"></span></div>
+                <div class="prep-question" id="prepQuestion"></div>
+                <div class="prep-options" id="prepOptions"></div>
+                <div id="prepFeedback"></div>
+                <div class="sl-nextbar hidden" id="prepNextBar"><button class="btn primary" id="prepNext">Câu tiếp theo →</button></div>
+              </div>
+            </div>
+            <aside class="card practice-side">
+              <h4>Tiến độ PREP</h4>
+              <div id="prepStats"></div>
+              <div class="sl-side-note" style="margin-top:14px"><b>PREP bất khả xâm phạm:</b> 202 là số <b>mục kiểm tra công thức</b> trong nguồn PREP HSK1–2. Mục trùng/lặp vẫn giữ nguyên; không gộp và không nhập nội dung từ nguồn khác. Chỉ bổ sung khi bạn gửi thêm PREP.</div>
+            </aside>
+          </div>
+
+          <div class="card section prep-catalog-wrap">
+            <div class="prep-catalog-head"><div><h4>Danh mục ngữ pháp PREP</h4><div class="mini">Sắp theo HSK → bài → số câu trong phần C Ngữ pháp.</div></div><span class="pill" id="prepCatalogCount">202 mục</span></div>
+            <div id="prepCatalog"></div>
+          </div>
+        </div>
+
+        <div id="slPanelPractice" class="sl-panel hidden">
+          <div class="card filters sl-level-filter-card">
+            <div class="sl-filter-step-title">
+              <b>Chọn theo cấp → ngữ pháp → từ vựng</b>
+              <span class="mini" id="slMatchInfo">Đang tính số câu phù hợp…</span>
+            </div>
+            <div class="filter-row sl-filter-row">
+              <div class="field sl-level-field"><label>1 · Cấp HSK</label>
+                <select id="slLevel">
+                  <option value="ALL" selected>Tất cả</option>
+                  <option value="1">HSK1</option>
+                  <option value="2">HSK2</option>
+                  <option value="3">HSK3</option>
+                </select>
+              </div>
+              <div class="field sl-grammar-field"><label>2 · Ngữ pháp theo cấp</label><select id="slGrammar"></select></div>
+              <div class="field sl-vocab-field"><label>3 · Từ vựng theo cấp</label><select id="slVocab"></select></div>
+              <div class="field"><label>4 · Dạng bài</label><select id="slMode"></select></div>
+              <div class="field sl-count-field"><label>5 · Số câu</label><select id="slCount"><option>10</option><option selected>20</option><option>30</option><option>50</option></select></div>
+              <button class="btn primary" id="slStart">Tạo phiên luyện</button>
+            </div>
+          </div>
+
+          <div class="practice-layout">
+            <div class="card sl-qcard" id="slQuizCard">
+              <div class="sl-empty" id="slInitial">Chọn cấu hình và bấm “Tạo phiên luyện”.</div>
+              <div id="slQuizBody" class="hidden">
+                <div class="sl-qhead">
+                  <div><div class="sl-qtitle" id="slQMode"></div><div class="sl-qsource" id="slQSource"></div></div>
+                  <div class="mini"><span id="slQIndex">1</span>/<span id="slQTotal">1</span></div>
+                </div>
+                <div class="sl-progress"><span id="slQProgress" style="width:0"></span></div>
+                <div class="sl-prompt" id="slQPrompt"></div>
+                <div class="sl-token-list" id="slQTokens"></div>
+                <textarea class="sl-answer" id="slQAnswer" rows="3" placeholder="Gõ câu tiếng Trung hoàn chỉnh..."></textarea>
+                <div class="sl-actions">
+                  <button class="btn primary" id="slCheck">Kiểm tra</button>
+                  <button class="btn secondary" id="slHint">Gợi ý</button>
+                  <button class="btn ghost" id="slSkip">Bỏ qua</button>
+                </div>
+                <div class="sl-feedback" id="slFeedback"></div>
+                <div class="sl-analysis hidden" id="slAnalysis"></div>
+                <div id="slMeta" style="display:flex;gap:7px;flex-wrap:wrap;margin-top:12px"></div>
+                <div class="sl-nextbar hidden" id="slNextBar"><button class="btn primary" id="slNext">Câu tiếp theo →</button></div>
+              </div>
+            </div>
+            <aside class="card practice-side">
+              <h4>Phiên luyện câu</h4>
+              <div id="slSessionStats"></div>
+              <div class="sl-side-note" style="margin-top:14px"><b>Cơ chế:</b> sau khi bấm “Kiểm tra”, web giữ nguyên câu hiện tại để bạn đọc đáp án, Pinyin, công thức và phân tích từng từ. Chỉ khi bạn bấm <b>Câu tiếp theo</b> mới chuyển câu.<br><br><b>Thứ tự chọn:</b> chọn cấp HSK trước → web chỉ hiện ngữ pháp có bài ở cấp đó → tiếp tục chọn từ vựng thực sự xuất hiện trong ngân hàng câu của cấp/ngữ pháp đã chọn.</div>
+            </aside>
+          </div>
+        </div>
+
+        <div id="slPanelGrammar" class="sl-panel hidden">
+          <div class="card section">
+            <h4>Ôn theo chủ đề ngữ pháp</h4>
+            <p class="mini">Danh sách các cấu trúc hiện có bài luyện trong Sentence Lab. Đây là công cụ luyện thuộc Ngữ pháp chuẩn.</p>
+            <div class="sl-grammar-grid" id="slGrammarCards"></div>
+          </div>
+        </div>
+
+        <div id="slPanelErrors" class="sl-panel hidden">
+          <div class="card section">
+            <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
+              <div><h4 style="margin-bottom:4px">Ôn lỗi Sentence Lab</h4><div class="mini">Các câu trả lời sai được lưu riêng trong trình duyệt này.</div></div>
+              <button class="btn bad" id="slClearErrors">Xóa lịch sử lỗi</button>
+            </div>
+            <div class="table-wrap" style="margin-top:14px"><table class="sl-history"><thead><tr><th>Ngữ pháp</th><th>Dạng</th><th>Câu đã gõ</th><th>Đáp án</th></tr></thead><tbody id="slErrorRows"></tbody></table></div>
+          </div>
+        </div>
+      </section>
+
+      
+
+      <section id="view-radicals" class="view">
+        <div class="hero compact-hero rad-hero">
+          <div>
+            <h3>214 Bộ thủ · Radical Lab</h3>
+            <p>Học bộ thủ theo số nét, biến thể, Pinyin, Hán–Việt và nghĩa gợi nhớ. Dữ liệu lấy trực tiếp từ file 214 bộ thủ bạn cung cấp.</p>
+          </div>
+        </div>
+
+        <div class="rad-kpis">
+          <div class="rad-kpi"><b id="radKpiTotal">214</b><span>Tổng bộ Kangxi</span></div>
+          <div class="rad-kpi"><b id="radKpiSeen">0</b><span>Đã học</span></div>
+          <div class="rad-kpi"><b id="radKpiKnown">0</b><span>Đã nhớ tốt</span></div>
+          <div class="rad-kpi"><b id="radKpiDue">0</b><span>Đến hạn ôn</span></div>
+        </div>
+
+        <div class="card section">
+          <div class="rad-tabs">
+            <button class="btn secondary rad-tab active" data-rad-tab="library">📚 Thư viện</button>
+            <button class="btn ghost rad-tab" data-rad-tab="flash">🃏 Flashcard / SRS</button>
+            <button class="btn ghost rad-tab" data-rad-tab="quiz">🎯 Quiz</button>
+            <button class="btn ghost rad-tab" data-rad-tab="chain">🔗 Bộ → Chữ → Từ → Câu</button>
+          </div>
+        </div>
+
+        <div id="radPanelLibrary" class="rad-panel">
+          <div class="card section">
+            <div class="rad-filter-row">
+              <div class="field rad-search"><label>Tìm bộ thủ</label><input id="radSearch" placeholder="Ví dụ: 氵, 水, shuǐ, thủy, nước"></div>
+              <div class="field"><label>Số nét</label><select id="radStroke"><option value="ALL">Tất cả 1–17 nét</option></select></div>
+              <div class="field"><label>Trạng thái</label><select id="radStatus"><option value="ALL">Tất cả</option><option value="NEW">Chưa học</option><option value="LEARNING">Đang học</option><option value="KNOWN">Đã nhớ</option><option value="DUE">Đến hạn ôn</option></select></div>
+              <button class="btn ghost" id="radReset">Đặt lại</button>
+            </div>
+            <div class="mini" id="radMatch" style="margin-top:10px"></div>
+            <div class="rad-grid" id="radGrid"></div>
+          </div>
+        </div>
+
+        <div id="radPanelFlash" class="rad-panel hidden">
+          <div class="card section">
+            <div class="rad-filter-row">
+              <div class="field"><label>Nguồn thẻ</label><select id="radFlashScope"><option value="DUE">Đến hạn + chưa học</option><option value="ALL">Toàn bộ 214</option><option value="NEW">Chỉ chưa học</option><option value="WEAK">Chưa nhớ / khó</option></select></div>
+              <div class="field"><label>Số thẻ</label><select id="radFlashCount"><option>10</option><option>20</option><option>30</option><option value="ALL">Tất cả</option></select></div>
+              <div class="field"><label>Thứ tự</label><select id="radFlashOrder"><option value="DUE">Ưu tiên đến hạn</option><option value="STROKE">Theo số nét</option><option value="RANDOM">Ngẫu nhiên</option></select></div>
+              <button class="btn primary" id="radFlashStart">Bắt đầu</button>
+            </div>
+          </div>
+          <div class="rad-session">
+            <div class="card rad-study-card">
+              <div id="radFlashEmpty" class="rad-empty">Chọn cấu hình và bấm “Bắt đầu”.</div>
+              <div id="radFlashBody" class="hidden" style="width:100%">
+                <div class="mini"><span id="radFlashIndex">1</span>/<span id="radFlashTotal">1</span></div>
+                <div class="rad-progress"><span id="radFlashProgress" style="width:0"></span></div>
+                <div class="rad-study-glyph" id="radFlashGlyph"></div>
+                <div class="rad-study-display" id="radFlashDisplay"></div>
+                <button class="btn secondary" id="radFlashReveal" style="margin-top:18px">Lật thẻ</button>
+                <div id="radFlashBack" class="hidden">
+                  <div class="rad-study-py" id="radFlashPinyin"></div>
+                  <div class="rad-study-hv" id="radFlashHanviet"></div>
+                  <div class="rad-study-meaning" id="radFlashMeaning"></div>
+                  <div class="rad-badges" style="justify-content:center;margin-top:10px"><span class="rad-badge" id="radFlashStrokes"></span><span class="rad-badge" id="radFlashNo"></span></div>
+                  <div class="rad-rating">
+                    <button class="btn bad" data-rad-rate="wrong">Chưa nhớ</button>
+                    <button class="btn warn" data-rad-rate="hard">Khó</button>
+                    <button class="btn good" data-rad-rate="known">Đã nhớ</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <aside class="card practice-side">
+              <h4>SRS bộ thủ</h4>
+              <div id="radFlashStats"></div>
+              <div class="mini" style="margin-top:12px">Chưa nhớ → ôn lại sớm. Khó → giãn cách ngắn. Đã nhớ → tăng dần khoảng ôn. Tiến độ lưu bằng localStorage trên trình duyệt.</div>
+            </aside>
+          </div>
+        </div>
+
+        <div id="radPanelQuiz" class="rad-panel hidden">
+          <div class="card section">
+            <div class="rad-filter-row">
+              <div class="field"><label>Dạng câu hỏi</label><select id="radQuizMode">
+                <option value="MIX">Hỗn hợp</option><option value="MEANING">Bộ → nghĩa</option><option value="RADICAL">Nghĩa → bộ</option><option value="PINYIN">Bộ → Pinyin</option><option value="HANVIET">Bộ → Hán–Việt</option><option value="VARIANT">Biến thể → bộ gốc</option>
+              </select></div>
+              <div class="field"><label>Số câu</label><select id="radQuizCount"><option>10</option><option>20</option><option>30</option></select></div>
+              <button class="btn primary" id="radQuizStart">Tạo bài quiz</button>
+            </div>
+          </div>
+          <div class="rad-session">
+            <div class="card rad-study-card">
+              <div id="radQuizEmpty" class="rad-empty">Bấm “Tạo bài quiz” để bắt đầu.</div>
+              <div id="radQuizBody" class="hidden" style="width:100%">
+                <div class="mini"><span id="radQuizIndex">1</span>/<span id="radQuizTotal">1</span></div>
+                <div class="rad-progress"><span id="radQuizProgress" style="width:0"></span></div>
+                <div class="rad-qprompt" id="radQuizPrompt"></div>
+                <div class="rad-choice-grid" id="radQuizChoices"></div>
+                <div id="radQuizFeedback" style="margin-top:14px"></div>
+                <div class="hidden" id="radQuizNextWrap" style="margin-top:14px"><button class="btn primary" id="radQuizNext">Câu tiếp theo →</button></div>
+              </div>
+            </div>
+            <aside class="card practice-side">
+              <h4>Kết quả quiz</h4>
+              <div id="radQuizStats"></div>
+              <div class="mini" style="margin-top:12px">Quiz chỉ sử dụng 5 trường có trong nguồn: bộ/biến thể, số nét, Pinyin, Hán–Việt và nghĩa gợi nhớ.</div>
+            </aside>
+          </div>
+        </div>
+
+        <div id="radPanelChain" class="rad-panel hidden">
+          <div class="card section">
+            <div class="cr-source">
+              <div>
+                <h4 style="margin:0">Character–Radical Mapping Bank</h4>
+                <div class="cr-source-note">
+                  Mục tiêu: nối 214 bộ Kangxi với toàn bộ chữ Hán có trong kho HSK1–9, sau đó truy ngược chữ → từ → câu.
+                  Seed offline dùng mapping đã kiểm chứng trong Flashcard; đồng bộ đầy đủ dùng trường <b>radical</b> của Make Me a Hanzi.
+                </div>
+                <div class="cr-source-status">
+                  <span class="cr-stat info" id="crTargetStat">0 chữ mục tiêu</span>
+                  <span class="cr-stat" id="crMappedStat">0 đã map</span>
+                  <span class="cr-stat warn" id="crUnresolvedStat">0 chưa map</span>
+                  <span class="cr-stat" id="crSourceStat">Seed offline</span>
+                </div>
+                <div class="cr-unresolved" id="crUnresolvedText"></div>
+              </div>
+              <div class="cr-actions">
+                <button class="btn primary" id="crSyncOnline">Đồng bộ Character Bank</button>
+                <label class="btn ghost" style="cursor:pointer">Nhập mapping<input type="file" id="crImport" accept=".txt,.json,application/json,text/plain" hidden></label>
+                <button class="btn ghost" id="crExport">Xuất mapping JSON</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card section">
+            <div class="cr-filter-row">
+              <div class="field"><label>Tìm bộ/chữ/từ</label><input id="crSearch" placeholder="Ví dụ: 氵, thủy, 河, học..."></div>
+              <div class="field"><label>Phạm vi HSK</label><select id="crLevelScope">
+                <option value="ALL">HSK1–9</option>
+                <option value="1-3">HSK1–3</option>
+                <option value="1">HSK1</option><option value="2">HSK2</option><option value="3">HSK3</option>
+                <option value="4">HSK4</option><option value="5">HSK5</option><option value="6">HSK6</option>
+                <option value="7">HSK7</option><option value="8">HSK8</option><option value="9">HSK9</option>
+              </select></div>
+              <button class="btn ghost" id="crReset">Đặt lại</button>
+            </div>
+            <div class="cr-breadcrumb" id="crBreadcrumb"></div>
+          </div>
+
+          <div class="cr-layout">
+            <section class="cr-col">
+              <div class="cr-col-head"><h4>1 · Bộ thủ</h4><span class="pill" id="crRadCount">0</span></div>
+              <div class="cr-scroll" id="crRadList"></div>
+            </section>
+            <section class="cr-col">
+              <div class="cr-col-head"><h4>2 · Chữ</h4><span class="pill" id="crCharCount">0</span></div>
+              <div class="cr-scroll" id="crCharList"></div>
+            </section>
+            <section class="cr-col">
+              <div class="cr-col-head"><h4>3 · Từ HSK</h4><span class="pill" id="crWordCount">0</span></div>
+              <div class="cr-scroll" id="crWordList"></div>
+            </section>
+            <section class="cr-col">
+              <div class="cr-col-head"><h4>4 · Câu</h4><span class="pill" id="crSentenceCount">0</span></div>
+              <div class="cr-scroll" id="crSentenceList"></div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-smart-vocab" class="view">
+        <div class="hero compact-hero">
+          <div>
+            <h3>Học từ thông minh</h3>
+            <p>Nhập một từ → luyện qua nhiều câu và nhiều cấu trúc ngữ pháp.</p>
+          </div>
+        </div>
+
+        <div class="card section sv-search-card">
+          <div class="sv-search-row">
+            <div class="field sv-search-field">
+              <label>Từ muốn học</label>
+              <input id="svWordInput" list="svWordList" placeholder="Nhập chữ Hán, Pinyin hoặc nghĩa Việt, ví dụ: 机会">
+              <datalist id="svWordList"></datalist>
+            </div>
+            <div class="field sv-level-field">
+              <label>Từ ngẫu nhiên theo cấp</label>
+              <select id="svRandomLevel">
+                <option value="1">HSK1</option>
+                <option value="2">HSK2</option>
+                <option value="3">HSK3</option>
+              </select>
+            </div>
+            <button class="btn primary" id="svLoadWord">Mở từ</button>
+            <button class="btn secondary" id="svRandomWord">Từ ngẫu nhiên</button>
+          </div>
+          <div id="svSearchMsg" class="mini" style="margin-top:8px"></div>
+        </div>
+
+        <div id="svWorkspace" class="hidden">
+          <div class="card section sv-word-summary">
+            <div class="sv-summary-main">
+              <div class="sv-big-word" id="svHanzi"></div>
+              <div>
+                <div class="sv-pinyin" id="svPinyin"></div>
+                <div id="svMeaning"></div>
+                <div class="meta" id="svMeta"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card section">
+            <div class="sv-tabs">
+              <button class="sv-tab active" data-sv-tab="sentence">🔀 Từ → Câu</button>
+            </div>
+          </div>
+
+          <div id="svPanelSentence" class="sv-panel">
+            <div class="practice-layout">
+              <div class="card sv-sentence-card">
+                <div class="sv-tool-head">
+                  <div>
+                    <h4 style="margin:0">Tự tạo bài sắp xếp từ từ vựng đã chọn</h4>
+                    <div class="mini">Web gom câu từ kho từ + Sentence Lab + các biến thể ngữ pháp an toàn, sau đó trộn để bạn tự gõ lại.</div>
+                  </div>
+                  <div class="sv-quick-switch">
+                    <button class="btn secondary" id="svAnotherWord">Từ khác</button>
+                    <button class="btn secondary" id="svAnotherSentence">Câu khác</button>
+                  </div>
+                </div>
+                <div class="sv-sentence-controls">
+                  <div class="field">
+                    <label>Ngữ pháp trong bộ câu</label>
+                    <select id="svGrammarFilter"><option value="ALL">Tất cả ngữ pháp</option></select>
+                  </div>
+                  <div class="sv-sentence-count" id="svSentenceCount">0 câu</div>
+                </div>
+                <div class="sv-sentence-tags" id="svSentenceTags"></div>
+                <div class="sv-token-list" id="svTokens"></div>
+                <textarea class="sv-answer" id="svSentenceAnswer" rows="3" placeholder="Gõ lại câu hoàn chỉnh bằng tiếng Trung..."></textarea>
+                <div class="sv-actions">
+                  <button class="btn primary" id="svCheckSentence">Kiểm tra</button>
+                  <button class="btn ghost" id="svSentenceHint">Gợi ý</button>
+                </div>
+                <div id="svSentenceFeedback" class="sv-feedback"></div>
+                <div id="svSentenceSolution" class="sv-solution hidden"></div>
+              </div>
+
+              <aside class="card practice-side">
+                <h4>Từ trọng tâm</h4>
+                <div id="svFocusWord"></div>
+                <button class="btn secondary sv-focus-next" id="svAnotherWordSide" style="width:100%;margin-top:10px">Từ khác →</button>
+                <div class="sv-side-note" style="margin-top:12px">
+                  Câu không tự chuyển. Dùng “Câu khác” để đổi câu với cùng từ; dùng “Từ khác” để chuyển nhanh sang một từ khác cùng cấp HSK.
+                </div>
+              </aside>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section id="view-dictionary" class="view">
+        <div class="hero"><div><h3>Kho từ vựng</h3><p>Tra cứu trực tiếp dữ liệu hiện có trong Sheet, gồm nguồn, cấp, Pinyin, nghĩa, từ loại, mẫu câu và vị trí gốc.</p></div></div>
+        <div class="card filters"><div class="searchbar"><input id="dictSearch" placeholder="Tìm chữ Hán, Pinyin hoặc nghĩa tiếng Việt…"><button class="btn primary" id="dictSearchBtn" data-hotkey="Enter">Tìm</button></div><div class="filter-row"><div class="field"><label>Nguồn</label><select id="dictSource"><option value="ALL">Tất cả</option><option value="PREP">PREP</option><option value="OUTSIDE_PREP">Ngoài PREP</option></select></div><div class="field"><label>Cấp</label><select id="dictLevel"><option value="ALL">Tất cả cấp</option></select></div><div class="field"><label>Độ khó</label><select id="dictDiff"><option value="ALL">Tất cả</option><option>Dễ</option><option>Trung bình</option><option>Khó</option></select></div><div class="field"><label>Sắp xếp</label><select id="dictSort"><option value="PINYIN_ASC" selected>Pinyin A → Z</option><option value="PINYIN_DESC">Pinyin Z → A</option><option value="SHEET">Theo Sheet</option></select></div></div><div class="mini" style="margin-top:10px">Mặc định sắp theo chữ cái Latin của Pinyin, bỏ qua dấu thanh khi xếp thứ tự. Ví dụ: ā / á / ǎ / à đều được xếp dưới chữ <b>a</b>.</div></div>
+        <div class="table-wrap"><table class="dict-table"><thead><tr><th>Nguồn</th><th class="info-hanzi">Hán</th><th class="info-pinyin">Pinyin</th><th class="info-meaning">Nghĩa</th><th>Từ loại</th><th class="info-hanzi">Mẫu câu</th><th>Gốc Sheet</th></tr></thead><tbody id="dictBody"></tbody></table></div><div id="dictPager" style="display:flex;justify-content:center;gap:8px;margin-top:14px"></div>
+      </section>
+
+      <section id="view-progress" class="view">
+        <div class="hero"><div><h3>Tiến độ cá nhân</h3><p>Theo dõi mức độ nắm từ, độ chính xác và các nhóm đang cần ưu tiên.</p></div></div>
+        <div class="grid two">
+          <div class="card section"><h4>Theo từng mô-đun</h4><div style="overflow:auto"><table class="progress-table"><thead><tr><th>Mô-đun</th><th>Số từ</th><th>Đã gặp</th><th>Thuộc</th><th>Tiến độ</th></tr></thead><tbody id="progressBody"></tbody></table></div></div>
+          <div class="card section"><h4>Từ cần ôn</h4><div class="danger-list" id="weakList"></div></div>
+        </div>
+      </section>
+
+      <section id="view-settings" class="view">
+        <div class="hero"><div><h3>Cài đặt</h3><p>Điều chỉnh mục tiêu học và sao lưu tiến độ. Dữ liệu từ vựng gốc không bị thay đổi.</p></div></div>
+        <div class="card section">
+          <div class="setting-row"><div><strong>Mục tiêu mỗi ngày</strong><p>Số câu/từ bạn muốn hoàn thành trong ngày.</p></div><input id="dailyGoal" type="number" min="5" max="500" step="5"></div>
+          <div class="setting-row"><div><strong>Gộp từ trùng khi tạo bài</strong><p>Dữ liệu gốc vẫn giữ đủ; tùy chọn này chỉ tránh hỏi lặp cùng Hán + Pinyin trong một phiên.</p></div><input id="dedupeToggle" type="checkbox"></div>
+          <div class="settings-subtitle"><div><strong>Hiển thị toàn cục</strong><p>Bật/tắt ba lớp thông tin trên toàn website. Cài đặt được lưu trên trình duyệt và đồng bộ với ba nút nhanh trên thanh trên cùng.</p></div><span class="pill">Áp dụng toàn web</span></div>
+          <div class="setting-row"><div><strong>Chữ Hán / Từ vựng</strong><p>Ẩn hoặc hiện chữ Hán ở Quét nhanh, gợi ý, từ điển, từ yếu, phần luyện gõ và viết tay.</p></div><input id="showHanziToggle" type="checkbox"></div>
+          <div class="setting-row"><div><strong>Pinyin</strong><p>Ẩn hoặc hiện Pinyin và Pinyin câu ví dụ. Dạng bài yêu cầu bạn tự gõ Pinyin vẫn chấm bình thường.</p></div><input id="showPinyinToggle" type="checkbox"></div>
+          <div class="setting-row"><div><strong>Nghĩa tiếng Việt</strong><p>Ẩn hoặc hiện nghĩa Việt khi nó đóng vai trò thông tin hỗ trợ. Các lựa chọn bắt buộc của câu trắc nghiệm vẫn được giữ để bài có thể hoạt động.</p></div><input id="showMeaningToggle" type="checkbox"></div>
+          <div class="setting-row"><div><strong>Phím tắt bàn phím</strong><p>Tên phím tắt được gắn trực tiếp trên các nút. Enter = hành động chính; Alt+1…9 = chuyển trang; Alt+S = bỏ qua; Alt+A = nghe; Alt+W = ôn từ yếu; Alt+E = xuất tiến độ; ? = xem toàn bộ phím tắt.</p></div><button type="button" class="btn secondary" id="settingsShortcutHelp" data-hotkey="?">Xem phím tắt</button></div>
+          <div class="setting-row"><div><strong>Thứ tự Pinyin A → Z</strong><p>Kho từ vựng và các phiên học có thể sắp theo chữ cái Latin của Pinyin. Khi xếp, dấu thanh không làm thay đổi vị trí chữ cái; bạn vẫn có thể chọn Ngẫu nhiên hoặc Theo Sheet trong từng chức năng.</p></div><span class="pill">Mặc định</span></div>
+          <div class="setting-row"><div><strong>Pinyin có dấu thanh</strong><p>Chế độ Hán → Pinyin kiểm tra dấu thanh theo đúng đáp án trong Sheet. Có bàn phím dấu và bộ chuyển số → dấu.</p></div><span class="pill">Bắt buộc</span></div>
+          <div class="setting-row"><div><strong>Tự động xác nhận chữ viết tay</strong><p>Khi bạn đã viết đúng đủ các nét của một chữ, hệ thống tự xác nhận và chuyển sang chữ tiếp theo. Có thể tắt để xác nhận thủ công.</p></div><input id="hwAutoRecognize" type="checkbox"></div>
+          <div class="setting-row"><div><strong>Thời gian chờ tự xác nhận</strong><p>Thời gian chờ sau khi hoàn thành đúng chữ. Mặc định 2 giây; trong lúc đang viết, hệ thống vẫn kiểm tra từng nét ngay để tránh nhận diện nhầm.</p></div><select id="hwAutoDelay" class="setting-select"><option value="500">0,5 giây</option><option value="1000">1 giây</option><option value="1500">1,5 giây</option><option value="2000">2 giây</option><option value="2500">2,5 giây</option><option value="3000">3 giây</option><option value="4000">4 giây</option><option value="5000">5 giây</option><option value="7000">7 giây</option><option value="10000">10 giây</option></select></div>
+          <div class="setting-row"><div><strong>Độ nghiêm khi chấm nét</strong><p>“Cân bằng” phù hợp nhất. Chọn “Nghiêm” nếu muốn hệ thống đòi hỏi vị trí/hướng nét sát mẫu hơn.</p></div><select id="hwLeniency" class="setting-select"><option value="1.3">Dễ</option><option value="1" selected>Cân bằng</option><option value="0.7">Nghiêm</option><option value="0.5">Rất nghiêm</option></select></div>
+          <div class="setting-row"><div><strong>Sao lưu tiến độ</strong><p>Xuất file JSON hoặc nhập lại trên máy khác.</p></div><div style="display:flex;gap:8px"><button class="btn ghost" id="exportProgress" data-hotkey="Alt+E">Xuất tiến độ</button><label class="btn secondary" style="cursor:pointer">Nhập tiến độ<input id="importProgress" type="file" accept="application/json" hidden></label></div></div>
+          <div class="setting-row"><div><strong>Đặt lại tiến độ</strong><p>Xóa kết quả học trên trình duyệt này, không ảnh hưởng Google Sheet.</p></div><button class="btn bad" id="resetProgress">Đặt lại</button></div>
+          <div class="setting-row"><div><strong>Dữ liệu</strong><p id="dataInfo"></p></div><span class="pill">Snapshot</span></div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+<div class="shortcut-modal" id="shortcutModal" aria-hidden="true">
+  <div class="shortcut-backdrop" data-shortcut-close></div>
+  <div class="shortcut-dialog" role="dialog" aria-modal="true" aria-labelledby="shortcutTitle">
+    <div class="shortcut-head"><div><h3 id="shortcutTitle">⌨ Phím tắt</h3><p>Thiết kế để học nhanh mà không cần rời tay khỏi bàn phím.</p></div><button type="button" class="shortcut-close" data-shortcut-close aria-label="Đóng">×</button></div>
+    <div class="shortcut-grid">
+      <section><h4>Hành động chung</h4>
+        <div class="shortcut-row"><span>Kiểm tra / xác nhận / câu tiếp theo / bắt đầu</span><kbd>Enter</kbd></div>
+        <div class="shortcut-row"><span>Bỏ qua câu hiện tại</span><kbd>Alt</kbd><b>+</b><kbd>S</kbd></div>
+        <div class="shortcut-row"><span>Nghe từ</span><kbd>Alt</kbd><b>+</b><kbd>A</kbd></div>
+        <div class="shortcut-row"><span>Đổi Pinyin số → dấu</span><kbd>Alt</kbd><b>+</b><kbd>C</kbd></div>
+        <div class="shortcut-row"><span>Xem đáp án / lật thẻ khi có hỗ trợ</span><kbd>Alt</kbd><b>+</b><kbd>R</kbd></div>
+        <div class="shortcut-row"><span>Mở bảng phím tắt</span><kbd>?</kbd></div>
+        <div class="shortcut-row"><span>Ôn nhanh từ yếu</span><kbd>Alt+W</kbd></div>
+        <div class="shortcut-row"><span>Xuất tiến độ</span><kbd>Alt+E</kbd></div>
+        <div class="shortcut-row"><span>Đóng bảng phím tắt</span><kbd>Esc</kbd></div>
+      </section>
+      <section><h4>Chuyển nhanh</h4>
+        <div class="shortcut-row"><span>Tổng quan</span><kbd>Alt+1</kbd></div>
+        <div class="shortcut-row"><span>Quét nhanh</span><kbd>Alt+2</kbd></div>
+        <div class="shortcut-row"><span>Kiểm tra hỗn hợp</span><kbd>Alt+3</kbd></div>
+        <div class="shortcut-row"><span>Gõ Pinyin</span><kbd>Alt+4</kbd></div>
+        <div class="shortcut-row"><span>Gõ chữ Hán</span><kbd>Alt+5</kbd></div>
+        <div class="shortcut-row"><span>Viết tay</span><kbd>Alt+6</kbd></div>
+        <div class="shortcut-row"><span>Từ điển</span><kbd>Alt+7</kbd></div>
+        <div class="shortcut-row"><span>Tiến độ</span><kbd>Alt+8</kbd></div>
+        <div class="shortcut-row"><span>Cài đặt</span><kbd>Alt+9</kbd></div>
+      </section>
+      <section><h4>Theo chức năng</h4>
+        <div class="shortcut-row"><span>Quét nhanh: Chưa biết / Chưa chắc / Biết</span><span><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></span></div>
+        <div class="shortcut-row"><span>Quét nhanh: Xem / ẩn đáp án</span><kbd>Space</kbd></div>
+        <div class="shortcut-row"><span>Trắc nghiệm: chọn đáp án</span><span><kbd>1</kbd>–<kbd>4</kbd></span></div>
+        <div class="shortcut-row"><span>Viết tay: viết lại chữ hiện tại</span><kbd>R</kbd></div>
+        <div class="shortcut-row"><span>Viết tay: về chữ trước</span><kbd>←</kbd></div>
+        <div class="shortcut-row"><span>Từ điển: đưa con trỏ vào ô tìm</span><kbd>/</kbd></div>
+      </section>
+      <section><h4>Hiển thị nhanh</h4>
+        <div class="shortcut-row"><span>Bật/tắt chữ Hán</span><kbd>Alt+H</kbd></div>
+        <div class="shortcut-row"><span>Bật/tắt Pinyin</span><kbd>Alt+P</kbd></div>
+        <div class="shortcut-row"><span>Bật/tắt nghĩa</span><kbd>Alt+M</kbd></div>
+        <p class="shortcut-note">Phím chữ/số đơn sẽ không chạy khi bạn đang gõ trong ô nhập, nên không cản việc nhập Pinyin hoặc chữ Hán.</p>
+      </section>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="data/vocab-data.js"></script>
+<script src="js/app-core.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
+<script src="js/learning-tools.js"></script>
+
+<script src="js/sentence-lab.js"></script>
+
+
+<script src="js/smart-vocab.js"></script>
+
+
+<script src="js/flashcards.js"></script>
+
+
+<script src="js/ui-enhancements.js"></script>
+
+
+<script src="js/radical-lab.js"></script>
+
+
+<script src="js/character-radical-chain.js"></script>
+
+</body></html>
